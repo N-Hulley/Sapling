@@ -11,7 +11,7 @@ web-build/
 web-report/
 
 .DS_Store
-ReactNativeProject/node_modules
+application/node_modules
 
 /node_modules
 /.pnp
