@@ -23,8 +23,17 @@
     "assetBundlePatterns": [
       "**/*"
     ],
+    "android": {},
     "ios": {
-      "supportsTablet": true
-    }
+      "bundleIdentifier": "com.nick-hulley.Sapling",
+      "supportsTablet": true,
+      "infoPlist": {
+        "NSAllowsArbitraryLoads": true,
+        "NSAppTransportSecurity": {
+          "NSAllowsArbitraryLoads": true
+        }
+      }
+    },
+    "description": ""
   }
 }

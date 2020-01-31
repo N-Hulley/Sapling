@@ -2,8 +2,12 @@ import React from "react";
 import { SocialIcon } from "react-native-elements";
 import { Text, View } from "react-native";
 import { Card } from "react-native-elements";
+import {api} from '../config';
+
 export default class Login extends React.Component {
-  render() {       
+  render() {
+    let loginInProcess = false;
+
     return (
       <Card
         title="SAPLING"
@@ -42,13 +46,27 @@ export default class Login extends React.Component {
               marginBottom: 0,
               backgroundColor: "#111"
             }}
+            
+            onPress={() => {
+            }}
             type="apple"
           />
           <SocialIcon
             title="Continue With Google"
             button
-            onPress={() => this.props.navigation.replace('Home', {name: 'Jane'})}
+            onPress={() => {
+              if (!loginInProcess) {
+                loginInProcess = true;
+                
+                this.props.navigation.replace('UserPicker', { });
 
+              }
+          
+             else {
+                /*Login in process, do something else*/
+            }
+          }}
+              
             style={{
               borderBottomLeftRadius: 20,
               borderTopLeftRadius: 0,
