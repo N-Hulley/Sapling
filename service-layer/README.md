@@ -7,3 +7,13 @@
 - `npm run dev`: Start development mode (load all services locally with hot-reload & REPL)
 - `npm run start`: Start production mode (set `SERVICES` env variable to load certain services)
 - `npm run cli`: Start a CLI and connect to production. Don't forget to set production namespace with `--ns` argument in script
+
+
+## Setup
+You will need to create a config.js file in the root directory, in there add
+```js
+export const mongoConfig = {
+    uri: "YOUR URI"
+}
+
+```

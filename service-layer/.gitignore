@@ -50,7 +50,7 @@ typings/
 
 # Output of 'npm pack'
 *.tgz
-
+.vscode
 # Yarn Integrity file
 .yarn-integrity
 
@@ -62,3 +62,4 @@ typings/
 
 # JetBrains IDE
 .idea
+config.js
