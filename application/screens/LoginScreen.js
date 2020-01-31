@@ -9,8 +9,10 @@ import {
 import {  Image } from "react-native-elements";
 import Login from "../components/Login";
 
+
+
 class LoginSCreen extends React.Component {
-    
+  
   static navigationOptions = {
     title: 'Welcome',
     headerShown: false,
