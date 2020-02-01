@@ -15,7 +15,7 @@ module.exports = {
 			"8cd8e466-de0e-48ab-92f6-253682f7268e": "494e41a6-1ab0-4679-a926-199d3c92fdcc"
 		},
 		mongoConfig: {
-			uri: `mongodb+srv://nickhulley:6E-bnP7csrk9uvQ@cluster0-4ujmf.mongodb.net/test?retryWrites=true&w=majority`
+			uri: ""
 		}
 	},
 
