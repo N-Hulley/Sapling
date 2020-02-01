@@ -1,5 +1,4 @@
 "use strict";
-import {mongoConfig} from './../config'
 
 module.exports = {
 	name: "userValidation",
@@ -14,6 +13,9 @@ module.exports = {
 			"91ec4e53-f3d9-4746-a92d-df744ba76654": "99e901ed-8f9a-4a5f-b9dc-9f268b6db7c1",
 			"c368487e-a21a-4b30-bcca-a4164b3f1047": "09f4ef78-efbd-4f5e-b7c1-02bf7e2111da",
 			"8cd8e466-de0e-48ab-92f6-253682f7268e": "494e41a6-1ab0-4679-a926-199d3c92fdcc"
+		},
+		mongoConfig: {
+			uri: `mongodb+srv://nickhulley:6E-bnP7csrk9uvQ@cluster0-4ujmf.mongodb.net/test?retryWrites=true&w=majority`
 		}
 	},
 
@@ -84,7 +86,7 @@ module.exports = {
 	 */
 	methods: {
 		firstInsert(ctx) {
-			
+
 			let response = {
 				code: 200
 			}
@@ -111,15 +113,15 @@ module.exports = {
 						lovers: [],
 						sharedby: [],
 					}
-					if (!newData.userID === "sampleNew") 
+					if (!newData.userID === "sampleNew")
 						collection.insertOne(newData);
 					response.user = newData;
 					client.close();
 					resolve(response);
-	
+
 				});
 			})
-			
+
 		},
 		setGoal(ctx) {
 			resolve("aaa");
@@ -127,7 +129,7 @@ module.exports = {
 		},
 		getGoal(ctx) {
 			const MongoClient = require('mongodb').MongoClient;
-			const uri =mongoConfig.uri;
+			const uri = this.settings.mongoConfig.uri;
 			const client = new MongoClient(uri, { useNewUrlParser: true });
 			client.connect(err => {
 				const collection = client.db("Sapling").collection("Users");
@@ -148,35 +150,40 @@ module.exports = {
 			let THIS = this;
 			return new Promise(function (resolve) {
 				if (THIS.settings.validTokens.hasOwnProperty(ctx.params.userID)) {
-					let token = THIS.settings.validTokens[ctx.params.userID];
+					let token = THIS.settings.validTokens[ctx.params.loginToken];
 					token == ctx.params.loginToken ? response.valid = true : response.valid = false;
-					const MongoClient = require('mongodb').MongoClient;
-					const uri = mongoConfig.uri;
-					const client = new MongoClient(uri, { useNewUrlParser: true });
+					if (response.valid) {
+						const MongoClient = require('mongodb').MongoClient;
+						const uri = THIS.settings.mongoConfig.uri;
+						const client = new MongoClient(uri, { useNewUrlParser: true });
 
-					client.connect(err => {
-						const collection = client.db("Sapling").collection("Users");
-						// perform actions on the collection object
-						let query = {
-							userID: ctx.params.userID
-						}
-						collection.find(query).toArray(function(err, result) {
-							if (err) throw err;
-							console.log(result);
-							client.close();
-							response.user = result[0];
-						resolve(response);
+						client.connect(err => {
+							const collection = client.db("Sapling").collection("Users");
+							// perform actions on the collection object
+							let query = {
+								userID: ctx.params.userID
+							}
+							collection.find(query).toArray(function (err, result) {
+								if (err) throw err;
+								console.log(result);
+								client.close();
+								response.user = result[0];
+								resolve(response);
 
-						  });
+							});
+							resolve(response);
 
-					});
+						});
+					} else {
+
+					}
 				} else {
 					response.newUser = true;
 					resolve(response);
 				}
 			});
 		},
-		
+
 		goalCompleted(ctx) {
 			let THIS = this;
 			return new Promise(async function (resolve) {
@@ -195,12 +202,12 @@ module.exports = {
 				response.user.goalCompletedTime = currentDate;
 
 				const MongoClient = require('mongodb').MongoClient;
-				const uri = mongoConfig.uri;
+				const uri = THIS.settings.mongoConfig.uri;
 				const client = new MongoClient(uri, { useNewUrlParser: true });
-				var newvalues = { $set: {streak: response.user.streak, goalCompleted: response.user.goalCompleted, goalCompletedTime: response.user.goalCompletedTime}}
+				var newvalues = { $set: { streak: response.user.streak, goalCompleted: response.user.goalCompleted, goalCompletedTime: response.user.goalCompletedTime } }
 				client.connect(err => {
 					const collection = client.db("Sapling").collection("Users");
-					collection.findOneAndUpdate(query,newvalues, {returnOriginal: false}, function (err, result) {
+					collection.findOneAndUpdate(query, newvalues, { returnOriginal: false }, function (err, result) {
 						if (err) throw err;
 						console.log(result);
 						client.close();
